@@ -7,6 +7,7 @@
         type="text"
         class="todo__title-field"
         placeholder="Edit category"
+        [(ngModel)]="name"
         name="name"
         (keyup.escape)="editing = false"
         (blur)="save()"

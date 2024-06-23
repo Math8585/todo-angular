@@ -12,12 +12,20 @@ import { Router } from '@angular/router';
 export class WelcomeComponent {
 
   constructor(private authService: AuthService,
+    private route: Router
   ) {
 
   }
 
   logout() {
-    this.authService.logout()
+    this.authService.logout().subscribe({
+      next: () => {
+        this.route.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Logout failed', err);
+      }
+    });
   }
 
 }

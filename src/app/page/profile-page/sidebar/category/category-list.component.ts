@@ -1,12 +1,13 @@
 import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { Category } from '../../../../../types/interfaces';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-category-list',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, FormsModule],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.css'
 })
@@ -14,6 +15,7 @@ export class CategoryListComponent {
   @Output() rename = new EventEmitter<string>();
 
   @Input() category!: Category;
+
 
   @ViewChild('nameField')
   set nameField(field: ElementRef) {
@@ -26,7 +28,7 @@ export class CategoryListComponent {
   name = '';
 
   ngOnChanges({ category }: SimpleChanges): void {
-    if (category.currentValue.title !== category.previousValue?.name) {
+    if (category.currentValue.name !== category.previousValue?.name) {
       this.name = category.currentValue.name;
     }
   }

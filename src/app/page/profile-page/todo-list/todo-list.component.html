@@ -49,7 +49,9 @@
 
       } @else {
       <label for="todo1" class="ml-3 block text-gray-600">
-        <span class="line-through text-lg font-medium">{{ todo.title }}</span>
+        <span [ngClass]="{'line-through': todo.completed, 'text-lg': true, 'font-medium': true}">
+          {{ todo.title }}
+        </span>
       </label>
       <div class="ml-auto flex justify-between gap-10">
         <button (click)="edit()">

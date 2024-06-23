@@ -39,7 +39,7 @@ export class CategoryService {
   }
 
   updateCategory({ id, ...data }: Category) {
-    return this.http.put<Category>(`/api/category${id}`, data).pipe(
+    return this.http.put<Category>(`/api/category/${id}`, data).pipe(
       withLatestFrom(this.categories$$),
       tap(([updatedCategory, categories]) => {
         this.categories$$.next(

@@ -50,6 +50,7 @@ export class CategoryDetailComponent implements OnInit{
     });
   }
 
+
   deleteCategory() {
     const decision = window.confirm('Are you sure?');
 

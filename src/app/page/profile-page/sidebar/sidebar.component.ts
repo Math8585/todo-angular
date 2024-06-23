@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MessageService } from '../../../../services/message.service';
 import { Category } from '../../../../types/interfaces';
 import { CommonModule } from '@angular/common';
+import { TodosService } from '../../../../services/todos.servise';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,6 +17,7 @@ import { CommonModule } from '@angular/common';
 })
 export class SidebarComponent {
   categories$ = this.categoryService.categories$;
+  todosLength: number = 0;
 
   constructor(
     private categoryService: CategoryService,

@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild, input } from '@angular/core';
 import { Todo } from '../../../../types/interfaces';
 import {  FormsModule} from '@angular/forms';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-todo-list',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, NgClass],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,7 +15,6 @@ export class TodoListComponent implements OnChanges {
   @Output() delete = new EventEmitter();
   @Output() toggle = new EventEmitter();
   @Output() rename = new EventEmitter<string>();
-
 
   @Input() todo!: Todo;
 
