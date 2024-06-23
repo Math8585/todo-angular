@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://todo-app-scp7.onrender.com",
+    "target": "https://todo-app-scp7.onrender.com/",
     "secure": false,
     "changeOrigin": true
   }
