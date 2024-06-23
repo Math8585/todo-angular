@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { User, NormalisedUser } from '../types/interfaces';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -39,8 +39,12 @@ export class AuthService {
     return !!this.token
   }
 
-  logout() {
-    this.setToken(null)
-    localStorage.clear()
+  logout(): Observable<void> {
+    return of(void 0).pipe(
+      tap(() => {
+        this.setToken(null);
+        localStorage.clear();
+      })
+    );
   }
 }

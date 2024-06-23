@@ -12,6 +12,15 @@ export interface NormalisedUser {
 }
 
 export interface Category {
+  id: string;
   name: string;
-  userId : number
 }
+
+export interface Todo {
+  id: string;
+  title: string;
+  completed: boolean;
+  user?: string;
+  categoryId: string;
+}
+
