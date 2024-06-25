@@ -2,12 +2,14 @@ import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges, View
 import { Category } from '../../../../../types/interfaces';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { TodosService } from '../../../../../services/todos.servise';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
   selector: 'app-category-list',
   standalone: true,
-  imports: [RouterModule, FormsModule],
+  imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.css'
 })
@@ -16,6 +18,9 @@ export class CategoryListComponent {
 
   @Input() category!: Category;
 
+  constructor(private todosService: TodosService) {
+
+  }
 
   @ViewChild('nameField')
   set nameField(field: ElementRef) {
@@ -25,6 +30,7 @@ export class CategoryListComponent {
   }
 
   editing = false;
+  todos$ = this.todosService.todos$;
   name = '';
 
   ngOnChanges({ category }: SimpleChanges): void {

@@ -1,5 +1,4 @@
 import { Component, Input, OnInit} from '@angular/core';
-import { SearchComponent } from '../search/search.component';
 import { TodoFormComponent } from '../todo-form/todo-form.component';
 import { TodoListComponent } from '../todo-list/todo-list.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -10,20 +9,20 @@ import { TodosService } from '../../../../services/todos.servise';
 import { MessageService } from '../../../../services/message.service';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-category-detail',
   standalone: true,
-  imports: [SearchComponent, TodoFormComponent, TodoListComponent, CommonModule, FormsModule, MatPaginatorModule],
+  imports: [TodoFormComponent, TodoListComponent, CommonModule, FormsModule, MatPaginatorModule],
   templateUrl: './category-detail.component.html',
   styleUrl: './category-detail.component.css'
 })
 export class CategoryDetailComponent implements OnInit {
   todos$ = this.todosService.todos$;
   category: Category | null = null;
-  totalTodos: number = 10;
+  totalTodos: number = 0;
   todosPerPage: number = 5;
   search: any;
   currentPage: number = 1;
@@ -54,8 +53,8 @@ export class CategoryDetailComponent implements OnInit {
     ).subscribe(category => {
       if (category) {
         this.category = category;
-        this.todosService.loadTodos(this.category?.id, this.todosPerPage, this.currentPage).subscribe({
-          error: () => this.messageService.showMessage('Unable to load todos'),
+        this.todosService.loadTodos(this.category?.id, this.todosPerPage, this.currentPage).subscribe(todoData => {
+          this.totalTodos = todoData.total;
         });
       }
     });
@@ -73,11 +72,25 @@ export class CategoryDetailComponent implements OnInit {
 
   trackById = (i: number, todo: Todo) => todo.id;
 
-  addTodo(newTitle: string,) {
-    this.todosService.createTodo(newTitle, this.category?.id!)
-      .subscribe({
-        error: () => this.messageService.showMessage('Unable to add a todo'),
-      });
+  addTodo(newTitle: string) {
+    this.todosService.createTodo(newTitle, this.category?.id!).subscribe({
+      next: () => {
+        this.messageService.showMessage('Todo added successfully');
+        this.todosService.loadTodos(this.category?.id, this.todosPerPage, this.currentPage).subscribe({
+          next: () => {
+            this.messageService.showMessage('Todo list updated successfully');
+          },
+          error: (error) => {
+            console.error('Error loading todos after adding:', error);
+            this.messageService.showMessage('Unable to update todo list');
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error adding todo:', error);
+        this.messageService.showMessage('Unable to add a todo');
+      }
+    });
   }
 
   toggleTodo(todo: Todo) {
@@ -94,12 +107,28 @@ export class CategoryDetailComponent implements OnInit {
       });
   }
 
+
   deleteTodo(todo: Todo) {
-    this.todosService.deleteTodo(todo)
-      .subscribe({
-        error: () => this.messageService.showMessage('Unable to delete a todo'),
-      });
+    this.todosService.deleteTodo(todo).subscribe({
+      next: () => {
+        this.messageService.showMessage('Todo deleted successfully');
+        this.todosService.loadTodos(this.category?.id, this.todosPerPage, this.currentPage).subscribe({
+          next: () => {
+            this.messageService.showMessage('Todo list updated successfully');
+          },
+          error: (error) => {
+            console.error('Error loading todos after deleting:', error);
+            this.messageService.showMessage('Unable to update todo list');
+          }
+        });
+      },
+      error: (error) => {
+        console.error('Error deleting todo:', error);
+        this.messageService.showMessage('Unable to delete todo');
+      }
+    });
   }
+
 
   logout() {
     this.authService.logout().subscribe({
@@ -114,12 +143,18 @@ export class CategoryDetailComponent implements OnInit {
   }
   Search() {
     if (this.search === '') {
-      this.todos$ = this.todosService.todos$
+      this.todos$ = this.todosService.todos$.pipe(
+        map(({ todos, total }) => ({ todos, total }))
+      );
     } else {
-      this.todos$ = this.todos$.pipe(
-        map(todos => todos.filter(todo =>
-          todo.title.toLocaleLowerCase().includes(this.search.toLocaleLowerCase())
-        ))
+
+      this.todos$ = this.todosService.todos$.pipe(
+        map(({ todos }) => ({
+          todos: todos.filter(todo =>
+            todo.title.toLowerCase().includes(this.search.toLowerCase())
+          ),
+          total: todos.length
+        }))
       );
     }
   }

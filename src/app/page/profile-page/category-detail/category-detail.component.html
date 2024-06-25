@@ -53,22 +53,20 @@
   >
     <app-todo-form (save)="addTodo($event)"></app-todo-form>
 
-    <div *ngIf="(todos$ | async)?.length === 0">No tasks found</div>
-    <div *ngFor="let todo of todos$ | async; let i = index; trackBy: trackById">
-      <app-todo-list
-        [todo]="todo"
-        (delete)="deleteTodo(todo)"
-        (rename)="renameTodo(todo, $event)"
-        (toggle)="toggleTodo(todo)"
-      ></app-todo-list>
+    <div *ngIf="(todos$ | async) as todosData">
+      <div *ngIf="todosData && todosData.todos.length === 0">No tasks found</div>
+      <div *ngFor="let todo of todosData?.todos; let i = index; trackBy: trackById">
+        <app-todo-list
+          [todo]="todo"
+          (delete)="deleteTodo(todo)"
+          (rename)="renameTodo(todo, $event)"
+          (toggle)="toggleTodo(todo)"
+        ></app-todo-list>
+      </div>
+      <mat-paginator *ngIf="todosData && todosData.todos.length > 0"
+        [length]="todosData.total"
+        [pageSize]="todosPerPage"
+        (page)="onPageChange($event)"
+      ></mat-paginator>
     </div>
-  </div>
-  <ng-container *ngIf="(todos$ | async) as todos">
-    <mat-paginator
-      *ngIf="todos.length > 0"
-      [length]="totalTodos"
-      [pageSize]="todosPerPage"
-      (page)="onPageChange($event)"
-    ></mat-paginator>
-  </ng-container>
 </div>

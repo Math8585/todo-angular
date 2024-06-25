@@ -6,7 +6,8 @@ import { Todo } from '../types/interfaces';
   providedIn: 'root'
 })
 export class TodosService {
-  private todos$$ = new BehaviorSubject<Todo[]>([]);
+  private todos$$ = new BehaviorSubject <{ todos: Todo[], total: number
+} >({ todos: [], total: 0 });
 
   todos$ = this.todos$$.asObservable();
 
@@ -16,10 +17,10 @@ export class TodosService {
 
   loadTodos(categoryId?: string, todosPerPage?: number, currentPage?: number) {
     const queryParams = `?pagesize=${todosPerPage}&page=${currentPage}`;
-    return this.http.get<Todo[]>(`/api/todos/${categoryId}${queryParams}`)
+    return this.http.get<{ todos: Todo[], total: number }>(`/api/todos/${categoryId}${queryParams}`)
       .pipe(
-        tap(todos => {
-          this.todos$$.next(todos)
+        tap(({ todos, total }) => {
+          this.todos$$.next({ todos, total });
         }),
       );
   }
@@ -33,34 +34,34 @@ export class TodosService {
       .pipe(
         withLatestFrom(this.todos$$),
         tap(([createdTodo, todos]) => {
-          this.todos$$.next(
-            [...todos, createdTodo]
+          this.todos$$.next({
+            todos: [...todos.todos, createdTodo],
+            total: todos.total
+          }
           );
         }),
-      )
+    )
   }
 
   updateTodo({ id, ...data }: Todo) {
     return this.http.put<Todo>(`/api/todos/${id}`, data)
       .pipe(
         withLatestFrom(this.todos$$),
-        tap(([updatedTodo, todos]) => {
-          this.todos$$.next(
-            todos.map(todo => todo.id === id ? updatedTodo : todo)
-          );
+        tap(([updatedTodo, { todos, total }]) => {
+          const updatedTodos = todos.map(todo => todo.id === id ? updatedTodo : todo);
+          this.todos$$.next({ todos: updatedTodos, total });
         }),
-      )
+      );
   }
 
   deleteTodo({ id }: Todo) {
     return this.http.delete<Todo>(`/api/todos/${id}`)
       .pipe(
         withLatestFrom(this.todos$$),
-        tap(([_, todos]) => {
-          this.todos$$.next(
-            todos.filter(todo => todo.id !== id),
-          );
+        tap(([_, { todos, total }]) => {
+          const updatedTodos = todos.filter(todo => todo.id !== id);
+          this.todos$$.next({ todos: updatedTodos, total: total - 1 });
         }),
-      )
+      );
   }
 }
