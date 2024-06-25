@@ -14,8 +14,9 @@ export class TodosService {
     private http: HttpClient,
   ) { }
 
-  loadTodos(categoryId?: string) {
-    return this.http.get<Todo[]>(`/api/todos/${categoryId}`)
+  loadTodos(categoryId?: string, todosPerPage?: number, currentPage?: number) {
+    const queryParams = `?pagesize=${todosPerPage}&page=${currentPage}`;
+    return this.http.get<Todo[]>(`/api/todos/${categoryId}${queryParams}`)
       .pipe(
         tap(todos => {
           this.todos$$.next(todos)
