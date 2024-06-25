@@ -1,11 +1,11 @@
 <div
   class="flex items-center justify-between h-16 bg-white border-b border-gray-200"
 >
-  <h1 class="text-gray-600 pl-4 text-2xl">{{ category?.name }}</h1>
+  <h1 class="mr-4 text-gray-600 pl-4 text-2xl">{{ category?.name }}</h1>
 
   <button
     (click)="deleteCategory()"
-    class="text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-r-lg font-medium px-4 py-2 inline-flex space-x-1 items-center"
+    class="pl-5 text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-r-lg font-medium px-4 py-2 inline-flex space-x-1 items-center"
   >
     <span>
       <svg
@@ -54,7 +54,7 @@
     <app-todo-form (save)="addTodo($event)"></app-todo-form>
 
     <div *ngIf="(todos$ | async) as todosData">
-      <div *ngIf="todosData && todosData.todos.length === 0">No tasks found</div>
+      <div class="text-gray-600 text-center mb-4 mt-4" *ngIf="todosData && todosData.todos.length === 0">No tasks found</div>
       <div *ngFor="let todo of todosData?.todos; let i = index; trackBy: trackById">
         <app-todo-list
           [todo]="todo"
