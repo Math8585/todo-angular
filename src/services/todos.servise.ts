@@ -6,6 +6,7 @@ import { Todo } from '../types/interfaces';
   providedIn: 'root'
 })
 export class TodosService {
+  private APIURL = 'https://todo-app-scp7.onrender.com'
   private todos$$ = new BehaviorSubject <{ todos: Todo[], total: number
 } >({ todos: [], total: 0 });
 
@@ -17,7 +18,7 @@ export class TodosService {
 
   loadTodos(categoryId?: string, todosPerPage?: number, currentPage?: number) {
     const queryParams = `?pagesize=${todosPerPage}&page=${currentPage}`;
-    return this.http.get<{ todos: Todo[], total: number }>(`/api/todos/${categoryId}${queryParams}`)
+    return this.http.get<{ todos: Todo[], total: number }>(`${this.APIURL}/api/todos/${categoryId}${queryParams}`)
       .pipe(
         tap(({ todos, total }) => {
           this.todos$$.next({ todos, total });
@@ -26,7 +27,7 @@ export class TodosService {
   }
 
   createTodo(title: string, categoryId: string) {
-    return this.http.post<Todo>(`/api/todos`, {
+    return this.http.post<Todo>(`${this.APIURL}/api/todos`, {
       title,
       completed: false,
       categoryId
@@ -44,7 +45,7 @@ export class TodosService {
   }
 
   updateTodo({ id, ...data }: Todo) {
-    return this.http.put<Todo>(`/api/todos/${id}`, data)
+    return this.http.put<Todo>(`${this.APIURL}/api/todos/${id}`, data)
       .pipe(
         withLatestFrom(this.todos$$),
         tap(([updatedTodo, { todos, total }]) => {
@@ -55,7 +56,7 @@ export class TodosService {
   }
 
   deleteTodo({ id }: Todo) {
-    return this.http.delete<Todo>(`/api/todos/${id}`)
+    return this.http.delete<Todo>(`${this.APIURL}/api/todos/${id}`)
       .pipe(
         withLatestFrom(this.todos$$),
         tap(([_, { todos, total }]) => {
