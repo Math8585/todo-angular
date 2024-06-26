@@ -3,7 +3,6 @@ import { CategoryFormComponent } from './category-form/category-form.component';
 import { CategoryListComponent } from './category/category-list.component';
 import { CategoryService } from '../../../../services/category.service';
 import { RouterLink } from '@angular/router';
-import { MessageService } from '../../../../services/message.service';
 import { Category } from '../../../../types/interfaces';
 import { CommonModule } from '@angular/common';
 
@@ -13,7 +12,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CategoryFormComponent, CategoryListComponent, CommonModule, RouterLink],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent {
   categories$ = this.categoryService.categories$;
@@ -21,26 +19,18 @@ export class SidebarComponent {
 
   constructor(
     private categoryService: CategoryService,
-    private messageService: MessageService,
   ) {}
 
   ngOnInit(): void {
-    this.categoryService.loadCategories().subscribe({
-      error: () => this.messageService.showMessage('Unable to load categories'),
-    });
+    this.categoryService.loadCategories().subscribe();
   }
   trackById = (i: number, category: Category) => category.id;
 
   addCategory(newName: string) {
-    this.categoryService.createCategory(newName).subscribe({
-      error: () => this.messageService.showMessage('Unable to add a category'),
-    });
+    this.categoryService.createCategory(newName).subscribe();
   }
 
   renameCategory(category: Category, name: string) {
-    this.categoryService.updateCategory({ ...category, name }).subscribe({
-      error: () =>
-        this.messageService.showMessage('Unable to rename a category'),
-    });
+    this.categoryService.updateCategory({ ...category, name }).subscribe();
   }
 }

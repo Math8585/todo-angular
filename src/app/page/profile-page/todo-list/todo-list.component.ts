@@ -8,7 +8,6 @@ import { NgClass } from '@angular/common';
   standalone: true,
   imports: [FormsModule, NgClass],
   templateUrl: './todo-list.component.html',
-  styleUrl: './todo-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoListComponent implements OnChanges {

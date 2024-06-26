@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './welcome.component.html',
-  styleUrl: './welcome.component.css'
 })
 export class WelcomeComponent {
 
@@ -31,11 +30,7 @@ export class WelcomeComponent {
     this.authService.logout().subscribe({
       next: () => {
         this.route.navigate(['/login']);
-      },
-      error: (err) => {
-        console.error('Logout failed', err);
       }
     });
   }
-
 }

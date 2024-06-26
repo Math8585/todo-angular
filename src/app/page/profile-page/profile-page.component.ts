@@ -9,7 +9,6 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [SidebarComponent, WelcomeComponent, CategoryDetailComponent, RouterOutlet],
   templateUrl: './profile-page.component.html',
-  styleUrl: './profile-page.component.scss'
 })
 export class ProfilePageComponent {
 

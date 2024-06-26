@@ -7,7 +7,6 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, 
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './category-form.component.html',
-  styleUrl: './category-form.component.css'
 })
 export class CategoryFormComponent {
   @Output() save = new EventEmitter<string>();

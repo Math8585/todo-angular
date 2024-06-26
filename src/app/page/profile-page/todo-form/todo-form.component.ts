@@ -6,7 +6,6 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './todo-form.component.html',
-  styleUrl: './todo-form.component.css'
 })
 export class TodoFormComponent {
   @Output() save = new EventEmitter<string>();

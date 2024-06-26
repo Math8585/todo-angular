@@ -1,4 +1,4 @@
-import { Component, Input, OnInit} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { TodoFormComponent } from '../todo-form/todo-form.component';
 import { TodoListComponent } from '../todo-list/todo-list.component';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -6,11 +6,11 @@ import { map, of, switchMap } from 'rxjs';
 import { CategoryService } from '../../../../services/category.service';
 import { Category, Todo } from '../../../../types/interfaces';
 import { TodosService } from '../../../../services/todos.servise';
-import { MessageService } from '../../../../services/message.service';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import {MatPaginatorModule, PageEvent} from '@angular/material/paginator';
+
 
 @Component({
   selector: 'app-category-detail',
@@ -31,7 +31,6 @@ export class CategoryDetailComponent implements OnInit {
     private categoryService: CategoryService,
     private router: Router,
     private todosService: TodosService,
-    private messageService: MessageService,
     private authService: AuthService
   ) {
 
@@ -82,56 +81,28 @@ export class CategoryDetailComponent implements OnInit {
   addTodo(newTitle: string) {
     this.todosService.createTodo(newTitle, this.category?.id!).subscribe({
       next: () => {
-        this.messageService.showMessage('Todo added successfully');
         this.todosService.loadTodos(this.category?.id, this.todosPerPage, this.currentPage).subscribe({
-          next: () => {
-            this.messageService.showMessage('Todo list updated successfully');
-          },
-          error: (error) => {
-            console.error('Error loading todos after adding:', error);
-            this.messageService.showMessage('Unable to update todo list');
-          }
         });
       },
-      error: (error) => {
-        console.error('Error adding todo:', error);
-        this.messageService.showMessage('Unable to add a todo');
-      }
     });
   }
 
+
   toggleTodo(todo: Todo) {
     this.todosService.updateTodo({ ...todo, completed: !todo.completed })
-      .subscribe({
-        error: () => this.messageService.showMessage('Unable to toggle a todo'),
-      });
+      .subscribe();
   }
 
   renameTodo(todo: Todo, title: string) {
     this.todosService.updateTodo({ ...todo, title })
-      .subscribe({
-        error: () => this.messageService.showMessage('Unable to rename a todo'),
-      });
+      .subscribe();
   }
 
 
   deleteTodo(todo: Todo) {
     this.todosService.deleteTodo(todo).subscribe({
       next: () => {
-        this.messageService.showMessage('Todo deleted successfully');
-        this.todosService.loadTodos(this.category?.id, this.todosPerPage, this.currentPage).subscribe({
-          next: () => {
-            this.messageService.showMessage('Todo list updated successfully');
-          },
-          error: (error) => {
-            console.error('Error loading todos after deleting:', error);
-            this.messageService.showMessage('Unable to update todo list');
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Error deleting todo:', error);
-        this.messageService.showMessage('Unable to delete todo');
+        this.todosService.loadTodos(this.category?.id, this.todosPerPage, this.currentPage).subscribe();
       }
     });
   }
@@ -142,9 +113,6 @@ export class CategoryDetailComponent implements OnInit {
       next: () => {
         this.router.navigate(['/login']);
       },
-      error: (err) => {
-        console.error('Logout failed', err);
-      }
     });
 
   }
@@ -173,8 +141,6 @@ export class CategoryDetailComponent implements OnInit {
   onPageChange(pageDate: PageEvent): void {
     this.currentPage = pageDate.pageIndex + 1;
     this.todosPerPage = pageDate.pageSize
-    this.todosService.loadTodos(this.category?.id, this.todosPerPage, this.currentPage).subscribe({
-      error: () => this.messageService.showMessage('Unable to load todos'),
-    })
+    this.todosService.loadTodos(this.category?.id, this.todosPerPage, this.currentPage).subscribe()
   }
 }

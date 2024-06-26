@@ -7,7 +7,7 @@ import { Category } from '../types/interfaces';
   providedIn: 'root',
 })
 export class CategoryService {
-  private APIURL = 'https://todo-app-scp7.onrender.com'
+  private API_URL = 'https://todo-app-scp7.onrender.com'
   private categories$$ = new BehaviorSubject<Category[]>([]);
 
   categories$ = this.categories$$.asObservable();
@@ -19,7 +19,7 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   loadCategories() {
-    return this.http.get<Category[]>(`${this.APIURL}/api/category`).pipe(
+    return this.http.get<Category[]>(`${this.API_URL}/api/category`).pipe(
       tap((categories) => {
         this.categories$$.next(categories);
       })
@@ -27,14 +27,14 @@ export class CategoryService {
   }
 
   getCategoryById(id: number ): Observable<Category> {
-    return this.http.get<Category>(`${this.APIURL}/api/category/${id}`).pipe((tap((category) => {
+    return this.http.get<Category>(`${this.API_URL}/api/category/${id}`).pipe((tap((category) => {
       this.category$$.next(category)
     })))
   }
 
   createCategory(name: string) {
     return this.http
-      .post<Category>(`${this.APIURL}/api/category`, {
+      .post<Category>(`${this.API_URL}/api/category`, {
         name,
       })
       .pipe(
@@ -46,7 +46,7 @@ export class CategoryService {
   }
 
   updateCategory({ id, ...data }: Category) {
-    return this.http.put<Category>(`${this.APIURL}/api/category/${id}`, data).pipe(
+    return this.http.put<Category>(`${this.API_URL}/api/category/${id}`, data).pipe(
       withLatestFrom(this.categories$$),
       tap(([updatedCategory, categories]) => {
         this.categories$$.next(
@@ -60,7 +60,7 @@ export class CategoryService {
   }
 
   deleteCategory({ id }: Category) {
-    return this.http.delete<Category>(`${this.APIURL}/api/category/${id}`)
+    return this.http.delete<Category>(`${this.API_URL}/api/category/${id}`)
       .pipe(
         withLatestFrom(this.categories$$),
         tap(([_, categories]) => {

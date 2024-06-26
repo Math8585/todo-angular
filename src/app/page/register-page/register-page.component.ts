@@ -9,7 +9,6 @@ import { Params, Router, RouterModule } from '@angular/router';
   standalone: true,
   imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './register-page.component.html',
-  styleUrl: './register-page.component.scss',
 })
 export class RegisterPageComponent implements OnInit, OnDestroy {
   form!: FormGroup;
@@ -40,8 +39,7 @@ export class RegisterPageComponent implements OnInit, OnDestroy {
     this.aSub = this.auth.register(this.form.value).subscribe({
       next: () =>
         this.router.navigate(['/login'], { queryParams: { registered: true } }),
-      error: (error) => {
-        console.warn(error);
+      error: () => {
         this.form.enable();
       },
     });

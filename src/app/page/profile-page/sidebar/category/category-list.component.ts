@@ -11,7 +11,6 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterModule, FormsModule, CommonModule],
   templateUrl: './category-list.component.html',
-  styleUrl: './category-list.component.css'
 })
 export class CategoryListComponent {
   @Output() rename = new EventEmitter<string>();
