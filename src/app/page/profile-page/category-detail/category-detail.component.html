@@ -1,11 +1,24 @@
 <div
-  class="flex items-center justify-between h-16 bg-white border-b border-gray-200"
+  class="flex relative items-center justify-between h-16 bg-white border-b border-gray-200"
 >
   <h1 class="mr-4 text-gray-600 pl-4 text-2xl">{{ category?.name }}</h1>
 
-  <button
+
+  <div class="pt-2 relative mx-auto text-gray-600">
+    <input
+      class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-lg focus:outline-none"
+      type="search"
+      name="search"
+      placeholder="Search todos by title"
+      [(ngModel)]="search"
+      (ngModelChange)="Search()"
+    />
+  </div>
+
+  <div class="flex space-x-5 px-5">
+    <button
     (click)="deleteCategory()"
-    class="pl-5 text-slate-800 hover:text-blue-600 text-sm bg-white hover:bg-slate-100 border border-slate-200 rounded-r-lg font-medium px-4 py-2 inline-flex space-x-1 items-center"
+    class="bg-slate-300 text-gray-600 py-2 px-4 rounded-2xl hover:text-red-500 hover:bg-white border border-slate-200 inline-flex "
   >
     <span>
       <svg
@@ -26,35 +39,26 @@
     <span class="hidden md:inline-block">Delete Category</span>
   </button>
 
-  <div class="pt-2 relative mx-auto text-gray-600">
-    <input
-      class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
-      type="search"
-      name="search"
-      placeholder="Search todos by title"
-      [(ngModel)]="search"
-      (ngModelChange)="Search()"
-    />
-  </div>
-
   <div class="flex items-center space-x-4 mr-4">
     <button
       (click)="logout()"
-      class="bg-slate-300 shadow-sm text-gray-600 border py-2 px-4 rounded-2xl hover:bg-white shadow-md"
+      class="bg-slate-300 shadow-sm text-gray-600 border py-2 px-4 rounded-2xl hover:bg-white hover:text-sky-500 shadow-md"
     >
       Logout
     </button>
   </div>
 </div>
 
-<div class="p-4">
+  </div>
+
+<div class="p-4 ">
   <div
     class="mx-auto max-w-screen-lg bg-white shadow-lg rounded-lg overflow-hidden"
   >
     <app-todo-form (save)="addTodo($event)"></app-todo-form>
 
     <div *ngIf="(todos$ | async) as todosData">
-      <div class="text-gray-600 text-center mb-4 mt-4" *ngIf="todosData && todosData.todos.length === 0">No tasks found</div>
+      <div class="text-gray-600 text-center text-lg mt-4" *ngIf="todosData && todosData.todos.length === 0">No tasks found</div>
       <div *ngFor="let todo of todosData?.todos; let i = index; trackBy: trackById">
         <app-todo-list
           [todo]="todo"
@@ -67,6 +71,7 @@
         [length]="todosData.total"
         [pageSize]="todosPerPage"
         (page)="onPageChange($event)"
+        class="absolute bottom-0 right-0"
       ></mat-paginator>
     </div>
 </div>

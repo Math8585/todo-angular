@@ -37,7 +37,7 @@
       @if(editing) {
       <form class="flex items-center" (ngSubmit)="save()">
         <input
-          class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+        class="bg-transparent border-none text-xl py-2 mt-2 text-gray-600 w-full mr-3 py-1 px-2 leading-tight focus:outline-none"
           type="text"
           placeholder=""
           name="title"
@@ -49,7 +49,7 @@
 
       } @else {
       <label for="todo1" class="ml-3 block text-gray-600">
-        <span [ngClass]="{'line-through': todo.completed, 'text-lg': true, 'font-medium': true}">
+        <span [ngClass]="{'line-through': todo.completed}" class="text-xl">
           {{ todo.title }}
         </span>
       </label>

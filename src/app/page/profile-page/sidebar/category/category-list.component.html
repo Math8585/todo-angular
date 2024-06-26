@@ -4,7 +4,7 @@
     <input
       #nameField
       type="text"
-      class="appearance-none bg-transparent border-none text-2xl py-2 mt-2 text-gray-600 w-full mr-3 py-1 px-2 leading-tight focus:outline-none"
+      class="bg-transparent border-none text-lg py-2 mt-2 text-gray-600 w-full mr-3 py-1 px-2 leading-tight focus:outline-none"
       placeholder="Edit category"
       [(ngModel)]="name"
       name="name"
@@ -16,7 +16,7 @@
   <div class="flex justify-between items-center" (dblclick)="edit()">
     <a
       [routerLink]="['/profile/category/', category.id]"
-      class="flex items-center text-2xl px-4 py-2 mt-2 text-gray-600 hover:bg-sky-400 hover:bg-opacity-25 rounded-2xl"
+      class="flex items-center text-xl px-4 py-2 mt-2 break-words text-gray-600 border-b border-transparent hover:text-sky-500 hover:border-b-sky-500"
     >
       {{ category.name }}
     </a>
