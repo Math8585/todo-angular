@@ -21,11 +21,11 @@
             id="fname"
             type="text"
             required
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 px-5 pr-16 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
         @if (form.get('firstName')?.invalid && form.get('firstName')?.touched) {
-          <span class="text-red-500">
+          <span class="text-red-500 text-sm">
             @if (form.get('firstName')?.errors?.['required']) {
               <span>FirstName is required</span>
             }
@@ -45,11 +45,11 @@
             id="lname"
             type="text"
             required
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 px-5 pr-16 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
         @if (form.get('lastName')?.invalid && form.get('lastName')?.touched) {
-          <span class="text-red-500">
+          <span class="text-red-500 text-sm">
             @if (form.get('lastName')?.errors?.['required']) {
               <span>Last Name is required</span>
             }
@@ -66,13 +66,14 @@
         <div class="mt-2">
           <input
             formControlName="email"
+            autocomplete="username"
             id="email"
             type="email"
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300  px-5 pr-16 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
         @if (form.get('email')?.invalid && form.get('email')?.touched) {
-          <span class="text-red-500">
+          <span class="text-red-500 text-sm">
             @if (form.get('email')?.errors?.['required']) {
               <span>Email is required</span>
             }
@@ -97,11 +98,11 @@
             formControlName="password"
             id="password"
             type="password"
-            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 px-5 pr-16 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
         </div>
         @if (form.get('password')?.invalid && form.get('password')?.touched) {
-          <span class="text-red-500">
+          <span class="text-red-500 text-sm">
             @if (form.get('password')?.errors?.['required']) {
               <span>Password is required</span>
             }
