@@ -43,19 +43,26 @@ export class CategoryDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.pipe(
-      switchMap(params => {
-        if (params.get('id')) {
-          return this.categoryService.getCategoryById(+params.get('id')!);
-        }
-        return of(null);
-      })
-    ).subscribe(category => {
+    this.route.paramMap
+      .pipe(
+        switchMap((params) => {
+          const id = params.get('id');
+          if (id) {
+            return this.categoryService.getCategoryById(+id);
+          }
+          return of(null);
+        })
+      )
+      .subscribe();
+
+    this.categoryService.category$.subscribe((category) => {
+      this.category = category;
       if (category) {
-        this.category = category;
-        this.todosService.loadTodos(this.category?.id, this.todosPerPage, this.currentPage).subscribe(todoData => {
-          this.totalTodos = todoData.total;
-        });
+        this.todosService
+          .loadTodos(category.id, this.todosPerPage, this.currentPage)
+          .subscribe((todoData) => {
+            this.totalTodos = todoData.total;
+          });
       }
     });
   }

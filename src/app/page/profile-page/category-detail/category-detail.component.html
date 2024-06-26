@@ -1,10 +1,9 @@
 <div
-  class="flex relative items-center justify-between h-16 bg-white border-b border-gray-200"
+  class="flex relative items-center justify-between h-16 bg-white border-b border-gray-200 shadow-md"
 >
   <h1 class="mr-4 text-gray-600 pl-4 text-2xl">{{ category?.name }}</h1>
 
-
-  <div class="pt-2 relative mx-auto text-gray-600">
+  <div class="pt-2 flex justify-start text-gray-600">
     <input
       class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-lg focus:outline-none"
       type="search"
@@ -71,7 +70,6 @@
         [length]="todosData.total"
         [pageSize]="todosPerPage"
         (page)="onPageChange($event)"
-        class="absolute bottom-0 right-0"
       ></mat-paginator>
     </div>
 </div>

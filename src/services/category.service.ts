@@ -12,7 +12,11 @@ export class CategoryService {
 
   categories$ = this.categories$$.asObservable();
 
-  constructor(private http: HttpClient) {}
+  private category$$ = new BehaviorSubject<Category | null>(null);
+
+  category$ = this.category$$.asObservable();
+
+  constructor(private http: HttpClient) { }
 
   loadCategories() {
     return this.http.get<Category[]>(`${this.APIURL}/api/category`).pipe(
@@ -23,7 +27,9 @@ export class CategoryService {
   }
 
   getCategoryById(id: number ): Observable<Category> {
-    return this.http.get<Category>(`${this.APIURL}/api/category/${id}`);
+    return this.http.get<Category>(`${this.APIURL}/api/category/${id}`).pipe((tap((category) => {
+      this.category$$.next(category)
+    })))
   }
 
   createCategory(name: string) {
@@ -48,6 +54,7 @@ export class CategoryService {
             category.id === id ? updatedCategory : category
           )
         );
+        this.category$$.next(updatedCategory);
       })
     );
   }
